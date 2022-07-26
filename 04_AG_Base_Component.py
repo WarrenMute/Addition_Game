@@ -1,8 +1,4 @@
-
-from ast import Interactive
 import random
-from tkinter import Y, Variable
-from tokenize import Number
 low_num_easy = 0
 high_num_easy = 20
 
@@ -13,24 +9,6 @@ num2 = random.randint(low_num_easy, high_num_easy)
 yes_no_list = ["yes", "no"]
 
 
-def choice_checker(question, valid_list, error):
-
-    valid = False
-    while not valid:
-
-        # Ask user for choice (and put in lowercase)
-        response = input(question).lower()
-
-        # In the list (or the first letter of an item)
-        # Full item name is returned
-        for item in valid_list:
-            if response == item[0] or response == item:
-                return item
-
-        # Output error if item not in list
-        print("item is not in list")
-        print(error)
-        print()
 
 def instructions():
   
@@ -64,7 +42,7 @@ def yes_no(question):
         else:
             print("Please answer yes / no")
 
-def check_rounds():
+def check():
  while True:
      response = input("How many question or <enter> for infinite mode: ")
      print()
@@ -94,26 +72,23 @@ questions_played = 0
 questions_wrong = 0
 
 
-#Answer
-
-
 
 # Welcomes player to the Addition Game
 print()
 print( " ---- Welcome To The Addition Quiz! ----")
 print()
-played_before = choice_checker(
-    "Have you played this game before? Please enter yes or no. ", yes_no_list, "Please enter yes / no")
+played_before = yes_no(
+    "Have you played this game before? Please enter yes or no. ")
 print()
 
 if played_before == "no":
     instructions()      
 
-    
+# Asks for name
 my_name = input("What is your name? ")
 print()
-ready = choice_checker("Well, " + my_name +
-                  ". Are you ready? ", yes_no_list,  "Please enter yes/no ")
+ready = yes_no("Well, " + my_name +
+                  ". Are you ready? ")
 print()
 
 if ready == "no":
@@ -121,7 +96,7 @@ if ready == "no":
 print()
 print()
  # Ask user for # of rounds, <enter> for infinite mode
-rounds = check_rounds()
+rounds = check()
 if rounds == "":
     mode = "infinite"
     rounds = 5
@@ -134,6 +109,7 @@ while end_game == "no":
 
     num = random.randint(low_num_easy, high_num_easy)
     num2 = random.randint(low_num_easy, high_num_easy)
+
     # Rounds heading
     print()
     if mode == "infinite":
@@ -161,8 +137,10 @@ while end_game == "no":
     # Generate questions
     print()
     print()
-    easy_question = int(input("What does {} + {} = ? " .format(num, num2)))
-    correct = int(num + num2)
+    easy_question = check(input("What does {} + {} = ? " .format(num, num2)))
+    correct = check(num + num2)
+
+    # Check if answer is correct or incorrect
     if easy_question == correct:
         print()
         print("CORRECT")
