@@ -1,17 +1,7 @@
 import random
-low_num_easy = 0
-high_num_easy = 20
-
-num = random.randint(low_num_easy, high_num_easy)
-num2 = random.randint(low_num_easy, high_num_easy)
-
-# list of valid responses
-yes_no_list = ["yes", "no"]
-
 
 
 def instructions():
-  
     print()
     print("*** Instructions ***")
     print()
@@ -26,6 +16,7 @@ def instructions():
     print("*** Good Luck! ***")
     print()
     return ""
+
 
 def yes_no(question):
     valid = False
@@ -42,40 +33,49 @@ def yes_no(question):
         else:
             print("Please answer yes / no")
 
-def check():
- while True:
-     response = input("How many question or <enter> for infinite mode: ")
-     print()
 
-     round_error = "Please type either <enter> " \
-               "or an integer that is more than 0\n"
+def check_questions(question, exit_code):
+    while True:
+        response = input(question)
 
-         # if infinite mode not chosen, check response
-         # Is an integer that is more than 0
-     if response != "":
-         try:
-             response = int(response)
+        # check to see if response is the exit code and return it
 
-             if response < 1:
-                 print(round_error)
-                 continue
+        if response == exit_code:
+            return response
 
-         except ValueError:
-             print(round_error)
-             continue
+        round_error = "Please enter an integer that is more than 0"
+        # if infinite mode not chosen, check response
+        # Is an integer that is more than 0
+        if response != exit_code:
+            try:
+                response = int(response)
 
-     return response
+                if response < 1:
+                    print(round_error)
+                    continue
 
+            except ValueError:
+                print(round_error)
+                continue
+
+        return response
 
 
 questions_played = 0
 questions_wrong = 0
 
 
+low_num_easy = 0
+high_num_easy = 20
 
+num = random.randint(low_num_easy, high_num_easy)
+num2 = random.randint(low_num_easy, high_num_easy)
+
+# list of valid responses
+yes_no_list = ["yes", "no"]
 # Welcomes player to the Addition Game
 print()
-print( " ---- Welcome To The Addition Quiz! ----")
+print(" ---- Welcome To The Addition Quiz! ----" )
 print()
 played_before = yes_no(
     "Have you played this game before? Please enter yes or no. ")
@@ -87,16 +87,15 @@ if played_before == "no":
 # Asks for name
 my_name = input("What is your name? ")
 print()
-ready = yes_no("Well, " + my_name +
-                  ". Are you ready? ")
+ready = yes_no("Well, " + my_name + ". Are you ready? ")
 print()
 
 if ready == "no":
     print("TOO BAD")
 print()
 print()
- # Ask user for # of rounds, <enter> for infinite mode
-rounds = check()
+# Ask user for # of rounds, <enter> for infinite mode
+rounds = check_questions("How many rounds? <enter for infinite> ", "")
 if rounds == "":
     mode = "infinite"
     rounds = 5
@@ -109,6 +108,9 @@ while end_game == "no":
 
     num = random.randint(low_num_easy, high_num_easy)
     num2 = random.randint(low_num_easy, high_num_easy)
+    # Generate questions
+    print()
+    print()
 
     # Rounds heading
     print()
@@ -126,22 +128,21 @@ while end_game == "no":
 
     if questions_played -1 == rounds:
         print()
-        print("GAME IS OVER")
-        print("THANK YOU FOR PLAYING")
-        print("FEEL FREE TO PLAY AGAIN")
         break
 
+    easy_question = "What does {} + {} = ? ".format(num, num2)
+    correct = (num + num2)
 
-
-
-    # Generate questions
-    print()
-    print()
-    easy_question = check(input("What does {} + {} = ? " .format(num, num2)))
-    correct = check(num + num2)
+    guess = check_questions(easy_question, "xxx", )
+    if guess == "xxx":
+        end_game = "yes"
+        break
+    if guess == "":
+        print("Please enter a Number")
+        continue
 
     # Check if answer is correct or incorrect
-    if easy_question == correct:
+    if guess == correct:
         print()
         print("CORRECT")
 
@@ -151,6 +152,7 @@ while end_game == "no":
         print()
         print("The correct answer is :", correct)
 
-    if easy_question is not None:
+    if guess is not None:
         error = "Please enter an number"
+        continue
 
